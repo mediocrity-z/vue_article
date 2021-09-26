@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 const Login=()=>import('../components/login.vue')
 const Home=()=>import('../components/home.vue')
+const Page=()=>import('../components/page.vue')
+const Welcome=()=>import('../components/welcome.vue')
 Vue.use(VueRouter)
 
 const routes = [
@@ -15,7 +17,19 @@ const routes = [
   },
   {
   path:'/home',
-  component: Home
+  component: Home,
+  redirect:'/welcome',
+  children:[
+    {
+      path:'/welcome',
+      component:Welcome
+    }
+    ,{
+      path:'/page',
+      component:Page
+    }
+   
+  ]
   },
   {
     path: '/about',
@@ -31,6 +45,7 @@ const router = new VueRouter({
   routes
 })
 
+// 路由导航守卫
 router.beforeEach((to,from,next)=>{
   if(to.path=='/login'){return next()}
   let str=window.sessionStorage.getItem('token')

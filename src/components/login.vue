@@ -92,8 +92,8 @@ export default {
     return {
       // 登录的表单对象
       loginForm: {
-        username: "",
-        password: "",
+        username: "zzs",
+        password: "123456",
       },
       //   控制注册与登录的页面切换
       showLogin: true,

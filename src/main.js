@@ -11,14 +11,26 @@ axios.interceptors.request.use(config=>{
 })
 
 // 组件按需导入
-import {Button, Form, FormItem, Input,Message} from 'element-ui'
+import {Button, Form, FormItem, Input,Message,Container,Header,Aside
+  ,Main,MessageBox,Avatar,Menu,MenuItem,MenuItemGroup,Submenu,Breadcrumb,BreadcrumbItem} from 'element-ui'
 
 
-
+Vue.use(Container)
+Vue.use(Header)
+Vue.use(Aside)
+Vue.use(Main)
 Vue.use(Button)
 Vue.use(Input)
 Vue.use(FormItem)
 Vue.use(Form)
+Vue.use(Avatar)
+Vue.use(Menu)
+Vue.use(MenuItem)
+Vue.use(MenuItemGroup)
+Vue.use(Submenu)
+Vue.use(Breadcrumb)
+Vue.use(BreadcrumbItem)
+Vue.prototype.$confirm=MessageBox.confirm
 Vue.prototype.$message=Message
 
 Vue.config.productionTip = false
