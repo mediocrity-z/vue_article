@@ -4,6 +4,9 @@ const Login=()=>import('../components/login.vue')
 const Home=()=>import('../components/home.vue')
 const Page=()=>import('../components/page.vue')
 const Welcome=()=>import('../components/welcome.vue')
+const Basic=()=>import('../components/basic.vue')
+const Pic=()=>import('../components/pic.vue')
+const Resetp=()=>import('../components/resetp.vue')
 Vue.use(VueRouter)
 
 const routes = [
@@ -27,8 +30,19 @@ const routes = [
     ,{
       path:'/page',
       component:Page
+    },
+    {
+      path:'/basic',
+      component:Basic
+    },
+    {
+      path:'/pic',
+      component:Pic
+    },
+    {
+      path:'/resetp',
+      component:Resetp
     }
-   
   ]
   },
   {

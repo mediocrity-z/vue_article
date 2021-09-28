@@ -195,7 +195,6 @@ export default {
           return this.$message.error(res.message);
         }
         this.$message.success("登录成功!");
-        console.log(res);
         // 记录token值
         window.sessionStorage.setItem("token", res.token);
         // 路由跳转

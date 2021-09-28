@@ -12,9 +12,12 @@ axios.interceptors.request.use(config=>{
 
 // 组件按需导入
 import {Button, Form, FormItem, Input,Message,Container,Header,Aside
-  ,Main,MessageBox,Avatar,Menu,MenuItem,MenuItemGroup,Submenu,Breadcrumb,BreadcrumbItem} from 'element-ui'
+  ,Main,MessageBox,Avatar,Menu,MenuItem,MenuItemGroup
+  ,Submenu,Breadcrumb,BreadcrumbItem,Card,Upload,Alert,Image} from 'element-ui'
 
+import store from './store'
 
+Vue.use(Upload)
 Vue.use(Container)
 Vue.use(Header)
 Vue.use(Aside)
@@ -30,6 +33,9 @@ Vue.use(MenuItemGroup)
 Vue.use(Submenu)
 Vue.use(Breadcrumb)
 Vue.use(BreadcrumbItem)
+Vue.use(Card)
+Vue.use(Alert)
+Vue.use(Image)
 Vue.prototype.$confirm=MessageBox.confirm
 Vue.prototype.$message=Message
 
@@ -37,5 +43,6 @@ Vue.config.productionTip = false
 
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')
