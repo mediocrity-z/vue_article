@@ -85,8 +85,6 @@
   </div>
 </template>
 <script>
-// 利用qs(axios内置库)将参数转换为query参数
-import qs from "qs";
 export default {
   data() {
     return {
@@ -171,10 +169,10 @@ export default {
         if (!valid) return;
         const { data: res } = await this.$http.post(
           "/api/reguser",
-          qs.stringify({
+          {
             username: this.registForm.registername,
-            password: this.registForm.registerpassword,
-          })
+            password: this.registForm.registerpassword
+          }
         );
         if (res.status != 0) {
           return this.$message.error(res.message);
@@ -189,7 +187,7 @@ export default {
         if (!valid) return;
         const { data: res } = await this.$http.post(
           "/api/login",
-          qs.stringify(this.loginForm)
+          this.loginForm
         );
         if (res.status != 0) {
           return this.$message.error(res.message);

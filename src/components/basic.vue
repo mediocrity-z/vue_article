@@ -13,15 +13,15 @@
   </div>
   
   <!-- 表单区域 -->
-<el-form :model="$store.state.user" ref="editRef" label-width="100px" :rules="editRules">
+<el-form :model="editForm" ref="editRef" label-width="100px" :rules="editRules">
   <el-form-item label="用户名" >
     <el-input clearable disabled v-model="$store.state.user.username"></el-input>
   </el-form-item>
   <el-form-item label="用户昵称" prop="nickname">
-    <el-input clearable placeholder="在此处设置您的昵称" v-model="nickname"></el-input>
+    <el-input clearable placeholder="在此处设置您的昵称" v-model="editForm.nickname"></el-input>
   </el-form-item>
   <el-form-item label="用户邮箱" prop="email">
-    <el-input clearable placeholder="在此处设置您的邮箱地址" v-model="email"></el-input>
+    <el-input clearable placeholder="在此处设置您的邮箱地址" v-model="editForm.email"></el-input>
   </el-form-item>
   <el-form-item>
     <el-button type="primary" @click="editInfo">提交</el-button>
@@ -33,19 +33,22 @@
     </div>
 </template>
 <script>
-import qs from 'qs'
 export default {
     created(){
     
     },
     data(){
         return {
-            nickname:'',
+          // 编辑表单对象
+          editForm:{
+             nickname:'',
             email:'',
+          },
+           
     // 表单验证规则
      editRules:{
          nickname:[
-             { required: true, message: "昵称不能为空", trigger: "blur" },
+             { required: true, message: "用户昵称不能为空", trigger: "blur" },
           {
             min: 3,
             max: 6,
@@ -65,18 +68,21 @@ export default {
             this.$refs.editRef.resetFields()
         },
         // 修改用户信息
-       async editInfo(){
-        const {data:res}=await this.$http.post('/my/userinfo',qs.stringify({
+    editInfo(){
+         this.$refs.editRef.validate(async (valid)=>{
+           if(!valid)return 
+           const {data:res}=await this.$http.post('/my/userinfo',{
                 id:this.$store.state.user.id,
-                nickname:this.nickname,
-                email:this.email
-        }))
+                nickname:this.editForm.nickname,
+                email:this.editForm.email
+        })
         if(res.status!=0){return this.$message.error(res.message)}
-        // 重新获取用户信息的数据以更新视图
+        // 重新获取用户信息的数据以更新主页视图
       const {data:update}=await this.$http.get('/my/userinfo')
       // 将更新后的用户数据传给vuex
        this.$store.commit('updateUser',update.data)
         this.$message.success(res.message)
+         })
         }
     }
 }

@@ -7,6 +7,9 @@ const Welcome=()=>import('../components/welcome.vue')
 const Basic=()=>import('../components/basic.vue')
 const Pic=()=>import('../components/pic.vue')
 const Resetp=()=>import('../components/resetp.vue')
+const Cate=()=>import('../components/cate.vue')
+const List=()=>import('../components/list.vue')
+const Publish=()=>import('../components/publish.vue')
 Vue.use(VueRouter)
 
 const routes = [
@@ -42,6 +45,18 @@ const routes = [
     {
       path:'/resetp',
       component:Resetp
+    },
+    {
+      path:'/cate',
+      component:Cate
+    },
+    {
+      path:'/list',
+      component:List
+    },
+    {
+      path:'/publish',
+      component:Publish
     }
   ]
   },
@@ -59,12 +74,23 @@ const router = new VueRouter({
   routes
 })
 
+//导入nprogress包对应的js和css
+import NProgress from 'nprogress/nprogress'
+import 'nprogress/nprogress.css'
+
 // 路由导航守卫
 router.beforeEach((to,from,next)=>{
+  // 如果跳转登录页，直接放行
   if(to.path=='/login'){return next()}
   let str=window.sessionStorage.getItem('token')
+  // 如果没有token值拦截访问路由
   if(!str){return next('/login')}
-  return next()
+  // 放行
+  next()
+  // 显示顶部进度条
+  NProgress.start()
+  // 隐藏顶部进度条
+  NProgress.done()
 })
 
 export default router

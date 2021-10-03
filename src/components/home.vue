@@ -15,8 +15,8 @@
       <el-container>
         <el-aside width="200px">
           <div class="wel">
-            <el-avatar v-if="$store.state.imgUrl" :src="$store.state.imgUrl"></el-avatar>
-            <el-avatar v-else>{{ avatitle }}</el-avatar>
+            <el-avatar v-if="img" :src="img"></el-avatar>
+            <el-avatar v-else icon="el-icon-user-solid"></el-avatar>
             <div class="name">欢迎您,{{resetname}}</div>
           </div>
           <el-menu
@@ -25,6 +25,7 @@
             active-text-color="#409EFF"
             unique-opened
             router
+            
           >
             <!-- 第一个一级菜单区域 -->
             <el-menu-item index="/page">
@@ -39,19 +40,19 @@
                 <span>文章管理</span>
               </template>
               <!-- 二级菜单区域 -->
-              <el-menu-item index="2-1">
+              <el-menu-item index="/cate">
                 <template slot="title">
                   <i class="el-icon-menu"></i>
                   <span>文章分类</span>
                 </template>
               </el-menu-item>
-              <el-menu-item index="2-2"
+              <el-menu-item index="/list"
                 ><template slot="title">
                   <i class="el-icon-reading"></i>
                   <span>文章列表</span>
                 </template></el-menu-item
               >
-              <el-menu-item index="2-3"
+              <el-menu-item index="/publish"
                 ><template slot="title">
                   <i class="el-icon-edit-outline"></i>
                   <span>发表文章</span>
@@ -98,8 +99,7 @@ export default {
   },
   data() {
     return { 
-      // 代替头像的文本内容
-      avatitle: "",
+      
     };
   },
   methods: {
@@ -111,9 +111,8 @@ export default {
       }
       // 把用户数据传递给vuex
       this.$store.commit('sendUser',res.data)
-      //  用户没更换头像之前默认头像是用户名的第一个字符
-        this.avatitle = this.$store.state.user.username.charAt(0);
     },
+    
     //    退出功能
     loginout() {
       this.$confirm("此操作将会退出登录，是否继续？", "提示", {
@@ -128,7 +127,7 @@ export default {
       }).catch(()=>{
         return 
       });
-    },
+    }
   },
   computed:{
     resetname(){
@@ -138,7 +137,9 @@ export default {
       else{
 return this.$store.state.user.nickname
         }
-      
+    },
+    img(){
+    return this.$store.state.imgUrl
     }
   }
 };

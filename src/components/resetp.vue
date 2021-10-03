@@ -52,7 +52,6 @@
   </div>
 </template>
 <script>
-import qs from 'qs'
 export default {
   data() {
     return {
@@ -91,13 +90,17 @@ export default {
           this.$refs.resetRef.resetFields()
       },
     //   提交新密码
-    async submitPwd(){
-   const {data:res}=await this.$http.post('/my/updatepwd',qs.stringify({
+    submitPwd(){
+      this.$refs.resetRef.validate(async (valid)=>{
+        if(!valid)return 
+        const {data:res}=await this.$http.post('/my/updatepwd',{
        oldPwd:this.resetPassword.origin,
        newPwd:this.resetPassword.newPassword
-   }))
+   })
    if(res.status!=0){return this.$message.error(res.message)}
    return this.$message.success(res.message)
+      })
+   
     }
   }
 };
