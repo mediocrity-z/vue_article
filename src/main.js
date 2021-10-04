@@ -33,7 +33,7 @@ if(config.headers['Content-Type'=='multipart/form-data']){
 // 组件按需导入
 import {Button, Form, FormItem, Input,Message,Container,Header,Aside
   ,Main,MessageBox,Avatar,Menu,MenuItem,MenuItemGroup
-  ,Submenu,Breadcrumb,BreadcrumbItem,Card,Upload,Alert,Image,Table,TableColumn, Pagination, Dialog, Select, Option} from 'element-ui'
+  ,Submenu,Breadcrumb,BreadcrumbItem,Card,Upload,Alert,Image,Table,TableColumn, Pagination, Dialog, Select, Option, Tag} from 'element-ui'
 
 import store from './store'
 
@@ -62,6 +62,7 @@ Vue.use(Pagination)
 Vue.use(Dialog)
 Vue.use(Select)
 Vue.use(Option)
+Vue.use(Tag)
 Vue.prototype.$confirm=MessageBox.confirm
 Vue.prototype.$message=Message
 

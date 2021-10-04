@@ -25,10 +25,10 @@
             active-text-color="#409EFF"
             unique-opened
             router
-            
+            :default-active="activePath"
           >
             <!-- 第一个一级菜单区域 -->
-            <el-menu-item index="/page">
+            <el-menu-item :index="path[0]" @click="saveNav(path[0])">
               <i class="el-icon-s-home"></i>
               <span slot="title">个人主页</span>
             </el-menu-item>
@@ -40,19 +40,19 @@
                 <span>文章管理</span>
               </template>
               <!-- 二级菜单区域 -->
-              <el-menu-item index="/cate">
+              <el-menu-item :index="path[1]" @click="saveNav(path[1])">
                 <template slot="title">
                   <i class="el-icon-menu"></i>
                   <span>文章分类</span>
                 </template>
               </el-menu-item>
-              <el-menu-item index="/list"
+              <el-menu-item :index="path[2]" @click="saveNav(path[2])"
                 ><template slot="title">
                   <i class="el-icon-reading"></i>
                   <span>文章列表</span>
                 </template></el-menu-item
               >
-              <el-menu-item index="/publish"
+              <el-menu-item :index="path[3]" @click="saveNav(path[3])"
                 ><template slot="title">
                   <i class="el-icon-edit-outline"></i>
                   <span>发表文章</span>
@@ -66,19 +66,19 @@
                 <i class="el-icon-s-custom"></i>
                 <span>个人中心</span>
               </template>
-              <el-menu-item index="/basic"
+              <el-menu-item :index="path[4]" @click="saveNav(path[4])"
                 ><template slot="title">
                   <i class="el-icon-s-cooperation"></i>
                   <span>基本资料</span>
                 </template></el-menu-item
               >
-              <el-menu-item index="/pic"
+              <el-menu-item :index="path[5]" @click="saveNav(path[5])"
                 ><template slot="title">
                   <i class="el-icon-picture"></i>
                   <span>更换头像</span>
                 </template></el-menu-item
               >
-              <el-menu-item index="/resetp"
+              <el-menu-item :index="path[6]" @click="saveNav(path[6])"
                 ><template slot="title">
                   <i class="el-icon-edit"></i>
                   <span>重置密码</span>
@@ -95,11 +95,20 @@
 <script>
 export default {
   created() {
+    // 获取用户信息
       this.getInfo();
+      // 获取本地存储的已激活的菜单选项
+      this.activePath=window.sessionStorage.getItem('activePath')
   },
   data() {
     return { 
-      
+      // 当前激活的菜单
+      activePath:null,
+      // 菜单选项的路径数组
+      path:[
+        '/page',"/cate",'/list',"/publish","/basic","/pic",
+"/resetp"
+      ]
     };
   },
   methods: {
@@ -127,6 +136,10 @@ export default {
       }).catch(()=>{
         return 
       });
+    },
+    // 菜单的点击事件，把激活的菜单选项保存在本地
+    saveNav(i){
+      window.sessionStorage.setItem('activePath',i)
     }
   },
   computed:{
