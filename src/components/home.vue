@@ -93,8 +93,9 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
-  created() {
+created() {
     // 获取用户信息
       this.getInfo();
       // 获取本地存储的已激活的菜单选项
@@ -136,6 +137,7 @@ export default {
       }).catch(()=>{
         return 
       });
+      window.sessionStorage.removeItem('activePath')
     },
     // 菜单的点击事件，把激活的菜单选项保存在本地
     saveNav(i){

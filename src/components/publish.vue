@@ -77,7 +77,10 @@
 
 <script>
 export default {
-  created() {},
+ async created(){
+const {data:res}=await this.$http.get('/my/article/cates')
+this.list=res.data
+  },
   data() {
     return {
       // 发表文章的表单对象
@@ -106,13 +109,12 @@ export default {
           
        ],
        coverUrl:[{ required: true, message: "文章封面不能为空", trigger: "blur" },]
-      }
+      },
+      // 文章分类列表
+      list:[]
     };
   },
   computed: {
-    list() {
-      return this.$store.state.cateList;
-    },
     limit() {
       // 如果存在图片地址则限制上传
       if (this.pubForm.coverUrl) {

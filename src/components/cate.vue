@@ -76,17 +76,17 @@
   :visible.sync="editDialogVisible"
   width="35%"
 >
-<el-form ref="editRefs" :model="editForm" label-width="80px">
-  <el-form-item label="分类名称">
+<el-form ref="editRefs" :model="editForm" label-width="80px" :rules="editRules">
+  <el-form-item label="分类名称" prop="Cname">
     <el-input v-model="editForm.Cname"></el-input>
   </el-form-item>
-   <el-form-item label="分类别名">
+   <el-form-item label="分类别名" prop="Aname">
     <el-input v-model="editForm.Aname"></el-input>
   </el-form-item>
 </el-form>
   <span slot="footer" class="dialog-footer">
   <el-button type="primary" @click="editCate">确 定</el-button> 
-   <el-button @click="editDialogVisible = false">取 消</el-button>
+   <el-button @click="closeEditDialog">取 消</el-button>
   </span>
 </el-dialog>
 
@@ -102,14 +102,14 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="list.length">
     </el-pagination>
- 
+
 </el-card>
     </div>
 </template>
 <script>
 export default {
     created(){
-    this.getCateList()
+      this.getCateList()
     },
     data(){
         return{
@@ -157,17 +157,37 @@ export default {
             id:0,
             Cname:'',
             Aname:''
+        },
+        // 编辑文章分类的验证规则对象
+        editRules:{
+          Cname:[
+             { required: true, message: "分类名称不能为空", trigger: "blur" },
+          {
+            min: 3,
+            max: 10,
+            message: "分类名称长度应在3到10个字符",
+            trigger: "blur",
+          },
+        ],
+        Aname:[
+             { required: true, message: "分类别名不能为空", trigger: "blur" },
+          {
+            min: 3,
+            max: 10,
+            message: "分类别名长度应在3到10个字符",
+            trigger: "blur",
+          },
+        ]
         }
         }
     },
 methods:{
-     // 获取文章分类列表
-   async getCateList(){
-  const {data:res}=await this.$http.get('/my/article/cates')
-  if(res.status!=0){return this.$message.error(res.message)}
-  // 把分类列表传递给vuex
-  this.$store.commit('sendCateList',res.data)
-   },
+  // 获取文章分类列表
+ async getCateList(){
+const {data:res}=await this.$http.get('/my/article/cates')
+if(res.status!=0){return this.$message.error(res.message)}
+this.$store.commit('getCateList',res.data)
+  },
 //    添加文章分类
 openDialog(){
 this.dialogVisible=true
@@ -178,8 +198,10 @@ closeAddDialog(){
     this.$refs.addRefs.resetFields()
 },
 // 添加分类
-async addCate(){
-const {data:res}=await this.$http.post('/my/article/addcates',{
+ addCate(){
+  this.$refs.addRefs.validate(async (valid)=>{
+    if(!valid)return;
+    const {data:res}=await this.$http.post('/my/article/addcates',{
     name:this.addForm.cateName,
     alias:this.addForm.cateAlias
 })
@@ -189,6 +211,8 @@ this.$refs.addRefs.resetFields()
 this.dialogVisible=false
 // 刷新当前分类列表
 this.getCateList()
+  })
+
 },
 // 监听pagesize发生改变的事件
 handleSizeChange(newSize){
@@ -228,6 +252,7 @@ async getEditCate(id){
 // 编辑文章的分类的信息
 editCate(){
   this.$refs.editRefs.validate(async (valid)=>{
+    if(!valid)return;
 const {data:res}=await this.$http.post('/my/article/updatecate',{
         Id:this.editForm.id,
         name:this.editForm.Cname,
@@ -236,9 +261,13 @@ const {data:res}=await this.$http.post('/my/article/updatecate',{
     if(res.status!=0){return this.$message.error(res.message)}
     this.$message.success(res.message)
     this.editDialogVisible=false
-    this.getCateList()
+  this.getCateList()
   })
-    
+},
+// 监听编辑商品对话框的关闭事件
+closeEditDialog(){
+  this.editDialogVisible = false;
+  this.$refs.editRefs.resetFields()
 }
 },
 computed:{

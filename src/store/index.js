@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 Vue.use(Vuex)
-
-
 export default new Vuex.Store({
   state: {
     // 用户信息
@@ -22,18 +20,19 @@ export default new Vuex.Store({
     updateUser(state,data){
       state.user=data
     },
-    // 保存文章分类列表信息
-    sendCateList(state,arr){
-      state.cateList=arr
-    },
     // 保存头像的图片地址
     sendImg(state,str){
       state.imgUrl=str
-    }
+    },
+    // 保存文章分类信息
+getCateList(state,res){
+  state.cateList=res
+}
   },
   actions: {
-
-  },
+    
+},
+  
   modules: {
   },
   getters:{
